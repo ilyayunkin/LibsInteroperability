@@ -3,15 +3,15 @@
 Chad Austin, 2002.02.15
 Updates
 2003.02.21
-Clarified some of my comments thanks to feedback and suggestions from Razvan Surdulescu. For actual COM compatibility, I added __stdcall to the method declarations as well. (Apparently, if you follow the guidelines of this article, it's easy to add bindings from your DLL to Delphi and VB!)
+Уточнил некоторые из моих комментариев благодаря отзывам и предложениям от Развана Сурдулеску. Для фактической совместимости с COM я добавил __stdcall в декларации метода. (По-видимому, если следовать правилам этой статьи, легко добавить привязки из вашей DLL в Delphi и VB!).
 
 2002.04.03
-Somebody (unfortunately, I lost his e-mail address and name before I could write it down. if you're reading this or you know who sent it, please drop me a line) sent me another guideline. The gist of it is that you shouldn't use overloaded methods in your interfaces. Different compilers will order them in the vtable differently.
+Кто-то (к сожалению, я потерял свой адрес электронной почты и имя, прежде чем я смог его записать. Если вы читаете это или знаете, кто его отправил, напишите мне письмо) прислал мне еще одну рекомендацию. Суть его в том, что вы не должны использовать перегруженные методы в своих интерфейсах. Различные компиляторы будут упорядочивать их в vtable по-разному.
 
 2002.03.27
-Ben Scott (bscott at iastate dot edu) submitted some excellent classes that simplify usage of the concepts presented in this article. Simply derive your interface classes from DLLInterface and your implementations from DLLImpl! Download the source file here.
+Бен Скотт (bscott at iastate dot edu) представил отличные классы, которые упрощают использование концепций, представленных в этой статье. Просто унаследуйте классы интерфейса от DLLInterface и ваши реализации от DLLImpl! Загрузите исходный файл [здесь](https://chadaustin.me/dllinterface.h).
 
-Overview
+## Обзор
 This article explains how to create C++ DLL APIs that will work across several compilers and configuration settings (Release, Debug, etc.).
 
 Background
