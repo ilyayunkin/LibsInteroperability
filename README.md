@@ -11,11 +11,9 @@
 Иногда люди удиивляются, почему компиляторы не используют одну и ту же схему для name-mangling. Это может сделать соединение успешным, но скорее всего даст вам программу, которая выйдет из строя при вызове в DLL. Для реальной совместимости ссылок требуется общий двоичный интерфейс приложения, а определение имен - всего лишь одно соображение среди многих. Вот неполный список:
 - http://ou800doc.caldera.com/SDK_porting/binary_cplusplus_compat.html
 - One compiler offers 3200 different ABIs according to this page: http://www.boost.org/libs/config/config.htm#source
-- According to Stroustrup (ARM, 7.2.1c, page 122):
+- Согласно Страуструпу(The Annotated C++ Reference Manual, 7.2.1c, page 122):
 ```
-If two C++ implementations for the same system use different calling sequences,
-or in other ways are not link compatible, it would be unwise to use identical encodings
-of type signatures.
+Если две реализации C++ для одной системы используют различные последовательноси вызовов (calling sequences) или несовместимы на уровне компоновки по другим причинам, было бы неблагоразумно использовать одинаковые кодировки сигнатур.
 ```
 Implementors have traditionally used deliberately different name-mangling schemes, figuring it's better to 'just say no' at link time than to make some simple code work and let the issues emerge at run time.
 
