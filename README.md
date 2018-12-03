@@ -15,15 +15,15 @@
 ```
 Если две реализации C++ для одной системы используют различные последовательноси вызовов (calling sequences) или несовместимы на уровне компоновки по другим причинам, было бы неблагоразумно использовать одинаковые кодировки сигнатур.
 ```
-Implementors have traditionally used deliberately different name-mangling schemes, figuring it's better to 'just say no' at link time than to make some simple code work and let the issues emerge at run time.
+Разработчики традиционно использовали намеренно разные схемы смены имен, полагая, что лучше просто сказать "нет" во время компоновки, чем делать какую-то простую работу кода и позволять возникать проблемы во время исполнения (run time).
 
-Even though GNU g++ can link MSVC C++ libraries now, and can produce MSVC++ compatible libraries/DLLs, this does not mean that they will be able to work at run-time due to the dynamic nature of C++. Some possible reasons for this are:--
+Даже хотя  GNU g++ может компоноваться с  MSVC C++ libraries сейчас и может производить MSVC++ совместимые библиотеки, это не означает, что они будут способны работать во время исполнения по причине динамической природы C++. Некоторые возможные причины:
+- The simple name mangling issue which it may be possible to circumvent with an explicit .def file.
+- Different structure alignment issues which need the correct compiler options (-mms-bitfields, ...).
+- A fundamental conflict of underlying exception and memory models:--
+- A new/delete or malloc/free in a MSVC DLL will not co-operate with a Cygwin newlib new/delete or malloc/free. One cannot free space which was allocated in a function using a different new/malloc at all.
+- An exception raised by an MSVC DLL will not be caught by a Cygwin executable, and vice versa.
+- The slow GNU SJLJ exception model, (used in GCC-3.x and earlier), is compatible with the MSVC++ model, but the new DWARF2 model, (which will be used by GCC-4.x), will be incompatible.
 
-The simple name mangling issue which it may be possible to circumvent with an explicit .def file.
-Different structure alignment issues which need the correct compiler options (-mms-bitfields, ...).
-A fundamental conflict of underlying exception and memory models:--
-A new/delete or malloc/free in a MSVC DLL will not co-operate with a Cygwin newlib new/delete or malloc/free. One cannot free space which was allocated in a function using a different new/malloc at all.
-An exception raised by an MSVC DLL will not be caught by a Cygwin executable, and vice versa.
-The slow GNU SJLJ exception model, (used in GCC-3.x and earlier), is compatible with the MSVC++ model, but the new DWARF2 model, (which will be used by GCC-4.x), will be incompatible.
-Circumventing the Issues
-The article at http://aegisknight.org/cppinterface.html describes an advanced technique which may help you to work around the name-mangling and linking problems; be sure to follow its guidelines carefully, if you try it.
+## Обобщим проблем
+Статья http://aegisknight.org/cppinterface.html Описывает продвинутую технику, которая может помочь вам обойти проблемы name-mangling и компоновки; Будьте внимательны, следуя руководству, если решите его испробовать.
