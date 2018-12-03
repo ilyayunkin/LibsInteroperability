@@ -1,6 +1,6 @@
 [Оригинал](http://www.mingw.org/wiki/Interoperability_of_Libraries_Created_by_Different_Compiler_Brands)
 
-# Взаимодейсмтвие библиотек, созданных разными компиляторами
+# Взаимодействие библиотек, созданных разными компиляторами
 
 ## Введение
 Объектные файлы и статические библиотеки, созданные различными компиляторами (или даже значительно различающимися релизами одного компилятора) обычно не могут быть скомпанованы друг с другом. Эта ситуация не специфична для MinGW: многие другие компиляторы взаимносовместимы. По возможности собирайте все из исходного кода одной версией одного компилятора.
@@ -18,12 +18,12 @@
 Разработчики традиционно использовали намеренно разные схемы смены имен, полагая, что лучше просто сказать "нет" во время компоновки, чем делать какую-то простую работу кода и позволять возникать проблемы во время исполнения (run time).
 
 Даже хотя  GNU g++ может компоноваться с  MSVC C++ libraries сейчас и может производить MSVC++ совместимые библиотеки, это не означает, что они будут способны работать во время исполнения по причине динамической природы C++. Некоторые возможные причины:
-- The simple name mangling issue which it may be possible to circumvent with an explicit .def file.
-- Different structure alignment issues which need the correct compiler options (-mms-bitfields, ...).
-- A fundamental conflict of underlying exception and memory models:--
-- A new/delete or malloc/free in a MSVC DLL will not co-operate with a Cygwin newlib new/delete or malloc/free. One cannot free space which was allocated in a function using a different new/malloc at all.
-- An exception raised by an MSVC DLL will not be caught by a Cygwin executable, and vice versa.
-- The slow GNU SJLJ exception model, (used in GCC-3.x and earlier), is compatible with the MSVC++ model, but the new DWARF2 model, (which will be used by GCC-4.x), will be incompatible.
+- Простая проблема с name mangling, которую можно обойти, задав явно .def файл.
+- Различные вопросы выравнивания структур, требующие настроек компилятора.
+- Фундаментальный конфликт моделей исключений и памяти:--
+- new/delete или malloc/free в MSVC DLL не будут взаимодействовать  с Cygwin newlib new/delete или malloc/free. Невозможно освободить память, выделенную с использованием чужихnew/malloc.
+- The slow GNU SJLJ exception model, (used in GCC-3.x and earlier), is compatible with the MSVC++ model, but the new DWARF2 model, (which will be used by GCC-4- An exception raised by an MSVC DLL will not be caught by a Cygwin executable, and vice versa.
+.x), will be incompatible.
 
-## Обобщим проблем
+## Обход проблем
 Статья http://aegisknight.org/cppinterface.html Описывает продвинутую технику, которая может помочь вам обойти проблемы name-mangling и компоновки; Будьте внимательны, следуя руководству, если решите его испробовать.
