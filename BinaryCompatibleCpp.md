@@ -12,10 +12,12 @@ Updates
 Бен Скотт (bscott at iastate dot edu) представил отличные классы, которые упрощают использование концепций, представленных в этой статье. Просто унаследуйте классы интерфейса от DLLInterface и ваши реализации от DLLImpl! Загрузите исходный файл [здесь](https://chadaustin.me/dllinterface.h).
 
 ## Обзор
-This article explains how to create C++ DLL APIs that will work across several compilers and configuration settings (Release, Debug, etc.).
+Эта статья объясняет, как создать C++ API для DLL, который будет работать между различными компиляторами и их конфигурациями (Release, Debug, ...).
 
-Background
-Many platforms have an ABI for their preferred programming language. For example, BeOS's primary language is C++, so the C++ compiler must be able to generate code that remains binary compatible with the operating system's C++ system calls (and classes, etc.).
+## Бэкграунд
+Многие платформы имеют ABI для выбранного языка программирования. Наприме, основным языком программирования BeOS является C++, поэтому C++ компилятор должен быть способен генерировать код с сохранением бинарной совместимости с C++ системными вызовами операционной системы (и классами и т.п.).
+
+Для Windows API и ABI определены на языке C, поэтому разработчики C++  компиляторов вольны рразрабатывать C++ ABI на свое усмотрение.
 
 The Windows API and ABI were defined for C, so C++ compiler writers had free reign to implement the C++ ABI however they felt. Eventually, however, Microsoft created an object-oriented ABI for Windows called COM. To simplify COM usage, they made the vtables of their C++ ABI match the vtables required in COM interface. Since a Windows compiler that can't use COM is pretty limited, other compiler vendors enforced the mapping between COM vtables and C++ vtables.
 
