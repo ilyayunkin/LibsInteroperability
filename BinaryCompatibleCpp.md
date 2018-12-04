@@ -32,7 +32,7 @@ Factory - Something that creates objects. In this article, we'll use a single gl
 DLL Boundary - The line between code instantiated in a DLL and code in a calling process is called the DLL boundary. In some cases, code can be on both sides of the boundary: Consider an inline function in a header file that gets used in the DLL and the executable. The function is actually instantiated on both sides of the boundary. Therefore, if the inline function has a static variable, two variables will be created, one in the executable and one in the DLL, and which is used depends on whether the code in the DLL or the executable is calling the function.
 Initial Attempt
 Let's say you want to create a portable windowing API and you want to stick the implementation in a DLL. I'm going to create a class called Window which can represent a window in several different windowing systems: Win32, MFC, wxWindows, Qt, Gtk, Aqua, X11, Swing (*gasp*), etc... We'll walk through several attempts at creating an interface until it works across different implementations, compilers, and compiler settings.
-``
+```
 // Window.h
 
 #include <string>
