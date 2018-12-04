@@ -69,7 +69,7 @@ Perhaps the most important problem with this approach is that the methods are no
 
 Attempt #2
 For those of you experienced in object oriented programming, you know that every class can be broken into two concepts: an interface and a factory. A factory is a mechanism for creating objects, and an interface allows you to communicate with them. The next version of Window.h will separate these concepts. Notice that you no longer need to export the class (you have to export the factory function though!), as it is abstract: all method calls go through the object's vtable, not through a direct linking to the DLL. Only the call to the factory function calls directly into the DLL.
-``
+```
 // Window.h
 
 #include <string>
