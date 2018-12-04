@@ -18,12 +18,12 @@ Updates
 Многие платформы имеют ABI для выбранного языка программирования. Наприме, основным языком программирования BeOS является C++, поэтому C++ компилятор должен быть способен генерировать код с сохранением бинарной совместимости с C++ системными вызовами операционной системы (и классами и т.п.).
 
 Для Windows API и ABI определены на языке C, поэтому разработчики C++  компиляторов вольны рразрабатывать C++ ABI на свое усмотрение.
+Однако, в Microsoft создали объектно-ориентированный ABI для Windows, названный COM. Для упрощения использования COM, они сделали таблицы виртуальных функций (vtables) своих ABI такими, как требует COM.  Поскольку компиляторов для Windows, которые не могут работать с COM, очень мало, другие производители компиляторов обеспечили совместимость с COM vtables.
 
-The Windows API and ABI were defined for C, so C++ compiler writers had free reign to implement the C++ ABI however they felt. Eventually, however, Microsoft created an object-oriented ABI for Windows called COM. To simplify COM usage, they made the vtables of their C++ ABI match the vtables required in COM interface. Since a Windows compiler that can't use COM is pretty limited, other compiler vendors enforced the mapping between COM vtables and C++ vtables.
+В ABI есть несколько аспектов. В этой статье обсуждаются только проблемы с использованием C ++ в Windows. Другие платформы имеют другие требования. (К счастью, поскольку большинство других платформ не так популярны, как Windows, для них имеется только один или два компилятора, и, следовательно, проблема не велика.)
 
-There are several aspects to an ABI. This article only discusses the issues with using C++ in Windows. Other platforms have different requirements. (Fortunately, since most other platforms aren't as popular as Windows, they have only one or two compilers, and thus there isn't much of a problem.)
+## Понятия
 
-Concepts
 ABI - Application Binary Interface. The binary interface between systems. If a binary interface changes, both sides of the interface (the user and the implementation) must be recompiled.
 API - Application Program Interface. The source interface between systems. If a source interface changes, code that uses that interface must be modified. API changes usually imply ABI changes.
 Interface - A class where every method is pure virtual, and thus has no inherent implementation. An interface is merely a protocol for communication between objects.
