@@ -112,11 +112,11 @@ extern "C" Window* CALL CreateWindow(const char* title);
 
 Мы почти у цели! Этот частный интерфейс скорее всего будет работать в большинстве ситуаций. Однако, виртуальный деструктор делает ситуацию немного интереснее. Т.к. COM не использует виртуальных деструкторов, вы не можете положиться на то, что разные компиляторы будут работать с ними одинаково. Однако, вы можете заменить виртуальный деструктор виртуальным методом, который выполнит **delete this**. Таким образом и конструктор, и деструктор будут находиться по одну сторону от границы DLL.Например, если вы попытаетесь использовать отладочную DLL-библиотеку VC ++ 6 вместе с релизным исполняемым файлом, либо ПО аварийно завершит работу, либо вы столкнетесь с предупреждениями типа «Значение ESP не сохранено при вызове функции». Эта ошибка возникает из-за того, что отладочная версия библиотеки времени выполнения VC ++ имеет другой аллокатор, чем релизная версия. Поскольку эти два аллокатора несовместимы, мы не можем выделить память на одной стороне границы DLL и удалить ее на другой.
 
-"But how is a virtual destructor different from another virtual method?" Virtual destructors are not responsible for deallocating the memory used by the object: They are simply called to perform necessary cleanup before the object is deallocated. The executable that uses your DLL will try to free the object's memory itself. On the other hand, the destroy() method is responsible for deallocating memory, so all new and delete calls stay on the same side of the DLL boundary.
+«Но чем виртуальный деструктор отличается от другого виртуального метода?» спросите вы. Виртуальные деструкторы не несут ответственности за освобождение памяти, используемой объектом: они просто вызываются для выполнения необходимой очистки перед освобождением объекта. Исполняемый файл, который использует вашу DLL, попытается освободить память самого объекта. С другой стороны, метод destroy () отвечает за освобождение памяти, поэтому все вызовы new и delete остаются на одной стороне границы DLL.
 
-It's also a good idea to make the interface's destructor protected so that users of the interface can't inadvertently use delete on it.
+Так же следует поместить деструктор интерфейса в секцию protected, чтобы было невозможно случайно использовать delete с интерфейсом.
 
-Revision 4
+## Ревизия 4
 ```
 // Window.h
 
