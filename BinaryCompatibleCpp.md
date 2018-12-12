@@ -92,11 +92,11 @@ Window* DLLIMPORT CreateWindow(std::string title);
 
 Вы могли заметить еще одну проблему в этом коде. Разные компиляторы по-разному реализуют стандартную библиотеку C++. Иногда пользователи сами подменяют стандартную библиотеку компилятора иной реализацией. Т.к. вы не можете положиться на бинарную совместимость STL объектов между компиляторами, вы не можете безопасно их использовать в изнтерфейсе DLL.
 
-If a C++ ABI is ever created for Windows, it will need to specify exactly how to interface with every class in the standard library, but I don't see this happening anytime soon.
+Если когда-нибудь будет создан C++ ABI для Windows, он должен конкретно описывать взаимодействие с каждым классом стандартной библиотеки. Но я не думаю, что это случится в  ближайшее время.
 
-The final problem here is a minor one. By convention, COM methods and DLL functions use the __stdcall calling convention. We can fix this with the CALL macro I defined above. (You'll want to rename it in your project.)
+Последняя проблема здесь - незначительная. По соглашению, методы COM и функции DLL используют соглашение о вызовах __stdcall. Мы можем исправить это с помощью макроса CALL, который я определил выше. (Вы захотите переименовать его в своем проекте.)
 
-Revision 3
+## Ревизия 3
 ```
 // Window.h
 
@@ -109,6 +109,10 @@ public:
 
 extern "C" Window* CALL CreateWindow(const char* title);
 ```
+
+Мы почти у цели! Этот частный интерфейс скорее всего будет работать в большинстве ситуаций. Однако, виртуальный деструктор делает ситуацию немного интереснее. Т.к. COM не использует виртуальных деструкторов, вы не можете положиться на то, что разные компиляторы будут работать с ними одинаково. Однако, вы можете заменить виртуальный деструктор виртуальным методом, который выполнит **delete this**. Таким образом и конструктор, и деструктор будут находиться по одну сторону от границы DLL.
+
+
 We're almost there! This particular interface will probably work in a lot of situations. However, the virtual destructor makes things a little interesting... Since COM doesn't use virtual destructors, you can't depend on different compilers to use them identically. However, you can replace the virtual destructor with a virtual method which, in the implementation class, is implemented by delete this; This way, both construction and destruction are implemented on the same side of the DLL boundary. For example, if you try to use a VC++ 6 debug DLL alongside a release executable, you'll either crash or run into warnings like "Value of ESP not saved across function call". This error occurs because the debug version of the VC++ runtime library has a different allocator than the release version. Since the two allocators are not compatible, we cannot allocate memory on one side of the DLL boundary and delete it on the other.
 
 "But how is a virtual destructor different from another virtual method?" Virtual destructors are not responsible for deallocating the memory used by the object: They are simply called to perform necessary cleanup before the object is deallocated. The executable that uses your DLL will try to free the object's memory itself. On the other hand, the destroy() method is responsible for deallocating memory, so all new and delete calls stay on the same side of the DLL boundary.
