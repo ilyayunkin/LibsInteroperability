@@ -149,7 +149,7 @@ extern "C" Window* CreateWindow(const char* title);
     ::operator delete(p);
   }
 ```
-Finishing Touches
+## Последние штрихи
 If your system has a lot of interfaces and implementations, you'll find that you'll want some way to automate undefining operator delete. Fortunately, this is possible too. Simply create a templated class called DefaultDelete and instead of deriving your implementation class from interface I, derive from class DefaultDelete<I>. Here's DefaultDelete's definition:
 ```
 template<typename T>
@@ -160,8 +160,7 @@ public:
   }
 };
   ```
-Final Implementation
-Here is the final version of the code.
+## Финальная версия
 ```
 // Window.h
 
@@ -231,7 +230,7 @@ public:
 };
 ```
   
-Summary
+## Итоги
 That's about it. In closure, I'll enumerate guidelines to keep in mind when creating C++ interface. You can look back on this as a reference or use it to help solidify your knowledge.
 
 All interface classes should be completely abstract. Every method should be pure virtual. (Or inline... you could safely write inline convenience methods that call other methods.)
