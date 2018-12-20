@@ -132,7 +132,7 @@ public:
 
 extern "C" Window* CreateWindow(const char* title);
 ```
-Since this code doesn't use any semantics not defined by COM, it should work flawlessly across compilers and configuration settings. Unfortunately, it's not ideal. You have to remember to delete objects with object->destroy();, which isn't nearly as intuitive as delete object;. Perhaps more importantly, you can no longer use std::auto_ptr on objects of this type. auto_ptr wants to delete the object it owns with delete object;. Is there a way to make the syntax delete object; actually call object->destroy();? Yes. Here's where things get a little weird... You can overload operator delete for the interface and have it call destroy(). Since operator delete takes a void pointer, you'll have to assume you never call Window::operator delete on anything that isn't a Window. This is a pretty safe assumption. Here's the operator implementation:
+Т.к. в коде отсутствуют конструкции, которые не были бы определены в COM, код должен прекрасно работать в любой комбинации компиляторов и их настроек. К сожалению, не все так идеально. Вы должны помнить об удалении объекстов с использованием **object->destroy();**, что не так интуитивно как **delete object;**. Возможно, еще хуже, что вы не можете использовать **std::auto_ptr** с этими объектами. auto_ptr предпочитает использовать delete. Есть ли выход? Да! Сейчас будет немного странно... Вы можете перегрузить оператор delete для интерфейса, при этом вызывая destroy(). Т.к. оператор delete получает указатель на void, вы должны будете предположить, что никогда не вызываете Window :: operator delete для всего, что не является Window. Это довольно безопасное предположение. Вот реализация оператора:
 
 ```
   void operator delete(void* p) {
@@ -142,7 +142,7 @@ Since this code doesn't use any semantics not defined by COM, it should work fla
     }
    }
 ```
-Looks pretty good... You can now use auto_ptr again, and you still have a stable binary interface. When you recompile and test your new code (you are testing, right??), you'll notice that there is a stack overflow in WindowImpl::destroy! What's going on? If you remember how the destroy method is implemented, you'll see that it simply executes delete this;. Since the interface overloads operator delete, WindowImpl::destroy calls Window::operator delete which calls WindowImpl::destroy... ad infinitum. The solution to this particular problem is to overload operator delete in the implementation class to call the global operator delete:
+Выглядит отлично. Вам снова доступен auto_ptr и вы все еще имеете стабильный ABI. Когда вы снова пересоберете и протестируете ваш код (вы ведь  тестируете?), вы заметите переполнение стека в WindowImpl::destroy! Что происходит? Если вы помните, метод destroy() просто вызывает **delete this**. Поскольку интерфейс перегружает оператор delete, цепочка вызовов зацикливается. Решение этой частной проблемы состоит в перегрузке оператора delete в классе реализации для использования глобального оператора delete:
 
 ```
   void operator delete(void* p) {
