@@ -150,7 +150,7 @@ extern "C" Window* CreateWindow(const char* title);
   }
 ```
 ## Последние штрихи
-If your system has a lot of interfaces and implementations, you'll find that you'll want some way to automate undefining operator delete. Fortunately, this is possible too. Simply create a templated class called DefaultDelete and instead of deriving your implementation class from interface I, derive from class DefaultDelete<I>. Here's DefaultDelete's definition:
+Если в вашей системе много интерфейсов и реализаций, очевидно, вам понадобится средство автоматизации переопределения оператора delete. К счастью и это возможно. Просто создайте шаблонный класс (назовем его **DefaultDelete**) и вместо наследования интерфейса I наследуйте DefaultDelete<I>:
 ```
 template<typename T>
 class DefaultDelete : public T {
