@@ -231,7 +231,13 @@ public:
 ```
   
 ## Итоги
-That's about it. In closure, I'll enumerate guidelines to keep in mind when creating C++ interface. You can look back on this as a reference or use it to help solidify your knowledge.
+Такие дела. В заключение перечислим основные идеи, которых необходимо придерживаться, создавая C++ интерфейс. Можете пользоваться списком как руководством или для закрепления знаний.
+
+- Все интерфейсные классы должны быть чисто абстрактными. Каждый метод должен быть чисто виртуальным (или встроенным).
+- Все глобальные функции должны быть **extern "C"** для предотвращения несовпадений в модификации имен. Экспортируемые функции должны использовать соглашение о вызовах **__stdcall** так как функции DLL  и COM традиционно используют это соглашение. Таким образом если пользователь библиотеки использует **__cdecl** по умолчанию, вызовы DLL будут отрабатывать корректно.
+- Не используйте STL.
+- Не используйте обработку исключений.
+- Не используйте виртуальные деструкторы. Создайте метод **destroy()** и перегрузите оператор **delete** так, чтобы он вызывал **destroy()**.
 
 All interface classes should be completely abstract. Every method should be pure virtual. (Or inline... you could safely write inline convenience methods that call other methods.)
 All global functions should be extern "C" to prevent incompatible name mangling. Also, exported functions and methods should use the __stdcall calling convention, as DLL functions and COM traditionally use that calling convention. This way, if a user of the library is compiling with __cdecl by default, the calls into the DLL will still use the correct convention.
