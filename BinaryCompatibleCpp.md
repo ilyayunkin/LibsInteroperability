@@ -238,15 +238,10 @@ public:
 - Не используйте STL.
 - Не используйте обработку исключений.
 - Не используйте виртуальные деструкторы. Создайте метод **destroy()** и перегрузите оператор **delete** так, чтобы он вызывал **destroy()**.
+- Освобождайте память на той стороне, где вы ее выделили. Разные DLL и приложения могут быть собраны с разными кучами. Выделять и освобождать память в разщных кучах - отличный способ "уронить" приложениуе. Например, не стоит делать встроенными функции выделения памяти, т.к. они могут быть по-разному откомпилированы в DLL и приложении.
+- Не используйте перегруженные методы в вашем интерфейсе. Различные компиляторы упорядочивают их по-разному в таблице виртуальных функций.
 
-All interface classes should be completely abstract. Every method should be pure virtual. (Or inline... you could safely write inline convenience methods that call other methods.)
-All global functions should be extern "C" to prevent incompatible name mangling. Also, exported functions and methods should use the __stdcall calling convention, as DLL functions and COM traditionally use that calling convention. This way, if a user of the library is compiling with __cdecl by default, the calls into the DLL will still use the correct convention.
-Don't use the standard C++ library.
-Don't use exception handling.
-Don't use virtual destructors. Instead, create a destroy() method and an overloaded operator delete that calls destroy().
-Don't allocate memory on one side of the DLL boundary and free it on the other. Different DLLs and executables can be built with different heaps, and using different heaps to allocate and free chunks of memory is a sure recipe for a crash. For example, don't inline your memory allocation functions so that they could be built differently in the executable and DLL.
-Don't use overloaded methods in your interface. Different compilers order them within the vtable differently.
-References
-STLPort is an alternate implementation of the STL.
-SGI has another standard C++ library implementation.
-The Corona image I/O library uses the techniques introduced in this article.
+## Ссылки
+- [STLPort](http://stlport.org/) - альтернативная реализация STL.
+- [SGI](http://www.sgi.com/tech/stl/) разработали еще одну альтернативную реализацию стандартной библиотеки C++.
+- The [Corona](http://corona.sf.net/) image I/O library uses the techniques introduced in this article.
