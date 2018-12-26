@@ -1,5 +1,5 @@
 [Оригинал](https://chadaustin.me/cppinterface.html)
-# Binary-compatible C++ Interfaces
+# Бинарно-совместимые интерфейсы на языке C++
 Chad Austin, 2002.02.15
 Updates
 2003.02.21
@@ -244,4 +244,4 @@ public:
 ## Ссылки
 - [STLPort](http://stlport.org/) - альтернативная реализация STL.
 - [SGI](http://www.sgi.com/tech/stl/) разработали еще одну альтернативную реализацию стандартной библиотеки C++.
-- The [Corona](http://corona.sf.net/) image I/O library uses the techniques introduced in this article.
+- Библиотека графического воода-вывода [Corona](http://corona.sf.net/) использует техники, описанные в данной статье.
