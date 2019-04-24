@@ -21,7 +21,7 @@
 - Простая проблема с name mangling, которую можно обойти, задав явно .def файл.
 - Различные вопросы выравнивания структур, требующие настроек компилятора.
 - Фундаментальный конфликт моделей исключений и памяти:--
-- new/delete или malloc/free в MSVC DLL не будут взаимодействовать  с Cygwin newlib new/delete или malloc/free. Невозможно освободить память, выделенную с использованием чужихnew/malloc.
+- new/delete или malloc/free в MSVC DLL не будут взаимодействовать  с Cygwin newlib new/delete или malloc/free. Невозможно освободить память, выделенную с использованием чужих new/malloc.
 - The slow GNU SJLJ exception model, (used in GCC-3.x and earlier), is compatible with the MSVC++ model, but the new DWARF2 model, (which will be used by GCC-4- An exception raised by an MSVC DLL will not be caught by a Cygwin executable, and vice versa.
 .x), will be incompatible.
 
